@@ -4547,7 +4547,7 @@
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-009_home_cmmn-02.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-009_home_cmmn-02.wav",
     "ja": "もうすぐ春かー！私のふところもあったかくならないかな？",
-    "zh": "马上就到春天了啊～！我的钱包是不是也能暖和起来呢？",
+    "zh": "春天要来了啊～！我的钱袋子是不是也能回暖呢？",
     "wav_source": "reused",
     "duration": 5.621145833333333,
     "sample_rate": 48000,
@@ -4556,7 +4556,9 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T20:08:23.321Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-009_home_cmmn-03",
