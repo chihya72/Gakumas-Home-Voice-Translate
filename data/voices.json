@@ -4095,8 +4095,8 @@
     "speaker": "ことね",
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-000_home_cmmn-03.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-000_home_cmmn-03.wav",
-    "ja": "世界中に私の可愛さアピールしてきまーす！",
-    "zh": "我要去向全世界展示我的可爱啦——！",
+    "ja": "世界中に私の可愛さ\nアピールしてきまーす！",
+    "zh": "我要去向全世界\n展示我的可爱啦——！",
     "wav_source": "reused",
     "duration": 4.3224583333333335,
     "sample_rate": 48000,
@@ -4107,7 +4107,8 @@
     "asr_review": [],
     "zh_origin": "manual_viewer",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:43:17.139Z"
+    "reviewed_at": "2026-10-09T20:20:46.540Z",
+    "ja_origin": "manual_viewer"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-001_home_cmmn-01",
