@@ -4174,8 +4174,8 @@
     "speaker": "ことね",
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-002_home_cmmn-01.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-002_home_cmmn-01.wav",
-    "ja": "お金持ちになったら、手見せ全盛アート化してみたいな～",
-    "zh": "等成了有钱人，我想试试把手部展示也全面艺术化～",
+    "ja": "お金持ちになったら、出店全制覇とかしてみたいな～",
+    "zh": "等我有钱了，真想把所有小摊都打卡一遍啊～",
     "wav_source": "reused",
     "duration": 5.3111041666666665,
     "sample_rate": 48000,
@@ -4184,7 +4184,10 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "ja_origin": "manual_viewer",
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T19:46:48.122Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-002_home_cmmn-02",
