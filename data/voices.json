@@ -5271,8 +5271,8 @@
     "speaker": "美鈴",
     "acb": "audio\\acb\\sud_vo_system_cidol-hmsz-3-001_home_cmmn-02.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-hmsz-3-001_home_cmmn-02.wav",
-    "ja": "暑い中、頑張る必要はない。そう思いませんか？",
-    "zh": "这么热的天，没必要那么勉强自己。你不觉得吗？",
+    "ja": "暑い中、頑張る必要はない。\nそう思いませんか？",
+    "zh": "这么热的天，\n没必要那么勉强自己。\n你不觉得吗？",
     "wav_source": "reused",
     "duration": 6.07775,
     "sample_rate": 48000,
@@ -5281,7 +5281,10 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "ja_origin": "manual_viewer",
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T20:11:53.443Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-hmsz-3-001_home_cmmn-03",
