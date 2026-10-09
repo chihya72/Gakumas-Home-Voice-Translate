@@ -4053,8 +4053,8 @@
     "speaker": "ことね",
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-000_home_cmmn-01.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-000_home_cmmn-01.wav",
-    "ja": "アイドルって瞬きまで見られてるんですね",
-    "zh": "偶像真是连眨个眼都会被一直看着呢...",
+    "ja": "アイドルって瞬きまで\n見られてるんですね",
+    "zh": "偶像真是连眨个眼\n都会被一直看着呢...",
     "wav_source": "reused",
     "duration": 4.1995625,
     "sample_rate": 48000,
@@ -4065,7 +4065,8 @@
     "asr_review": [],
     "zh_origin": "manual_viewer",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:24:29.760Z"
+    "reviewed_at": "2026-10-09T20:20:09.910Z",
+    "ja_origin": "manual_viewer"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-000_home_cmmn-02",
