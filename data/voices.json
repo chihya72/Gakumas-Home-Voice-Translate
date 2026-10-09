@@ -4158,8 +4158,8 @@
     "speaker": "ことね",
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-001_home_cmmn-03.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-001_home_cmmn-03.wav",
-    "ja": "ライブが近くなると、ドキドキとワクワクが！",
-    "zh": "每当演唱会临近，我就心跳加速、兴奋不已...！",
+    "ja": "ライブが近くなると、\nドキドキとワクワクが！",
+    "zh": "每当演唱会临近，\n我就心跳加速、兴奋不已！",
     "wav_source": "reused",
     "duration": 5.347270833333333,
     "sample_rate": 48000,
@@ -4170,7 +4170,8 @@
     "asr_review": [],
     "zh_origin": "manual_viewer",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:46:24.745Z"
+    "reviewed_at": "2026-10-09T20:21:38.017Z",
+    "ja_origin": "manual_viewer"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-002_home_cmmn-01",
