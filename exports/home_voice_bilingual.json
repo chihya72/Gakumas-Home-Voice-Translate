@@ -1712,8 +1712,8 @@
   {
     "voiceAssetId": "sud_vo_system_cidol-hmsz-3-000_home_cmmn-02",
     "speaker": "美鈴",
-    "ja": "迷いでも悩みでも、何でも話してください。",
-    "zh": "无论是迷茫还是烦恼，什么都可以跟我说。"
+    "ja": "迷いでも悩みでも、\n何でも話してください。",
+    "zh": "无论是迷茫还是烦恼，\n什么都可以跟我说。"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-hmsz-3-000_home_cmmn-03",
