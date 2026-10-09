@@ -4385,7 +4385,7 @@
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-007_home_cmmn-01.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-007_home_cmmn-01.wav",
     "ja": "真っ暗だった私の未来、うーんと明るくしますよ！",
-    "zh": "我会把曾经一片黑暗的未来，变得亮堂堂的哦！",
+    "zh": "我会把我曾经黯淡无光的未来，变成一片光明！",
     "wav_source": "reused",
     "duration": 4.735104166666667,
     "sample_rate": 48000,
@@ -4394,9 +4394,9 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:39:47.994Z"
+    "reviewed_at": "2026-10-09T19:43:01.749Z",
+    "zh_origin": "manual_viewer"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-007_home_cmmn-02",
