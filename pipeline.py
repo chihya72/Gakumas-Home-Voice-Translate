@@ -123,8 +123,41 @@ def repeated_transcript(text: str) -> bool:
     return bool(re.fullmatch(r"(.{12,}?)\1+", compact))
 
 
-def dictionary_hotwords(dictionary: dict) -> list[str]:
-    return [key for key in dictionary if key and not key.startswith("_")]
+def load_hotwords(path: Path) -> list[str]:
+    table = read_json(path)
+    if not isinstance(table, dict):
+        raise ValueError(f"Hotword table must contain grouped Japanese lists: {path}")
+    words = []
+    for group, entries in table.items():
+        if group.startswith("_"):
+            continue
+        if not isinstance(entries, list):
+            raise ValueError(f"Hotword group {group} must be a list")
+        for word in entries:
+            if not isinstance(word, str) or not word.strip() or "\n" in word or "\r" in word:
+                raise ValueError(f"Invalid hotword in {group}: {word!r}")
+            word = word.strip()
+            if word not in words:
+                words.append(word)
+    if not words:
+        raise ValueError("Hotword table is empty")
+    return words
+
+
+def csv_text(text: str) -> str:
+    return text.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\\n")
+
+
+def csv_original(text: str) -> str:
+    return text.replace("\r\n", "\n").replace("\r", "\n").replace("\\n", "\n")
+
+
+def write_bilingual_csv(path: Path, rows: list) -> None:
+    with path.open("w", encoding="utf-8-sig", newline="") as output:
+        writer = csv.writer(output)
+        writer.writerow(["voiceAssetId", "speaker", "ja", "zh"])
+        for row in rows:
+            writer.writerow([row["voiceAssetId"], row["speaker"], csv_text(row["ja"]), csv_text(row["zh"])])
 
 
 def chinese_export_text(text: str) -> str:
@@ -142,16 +175,29 @@ class Pipeline:
         for row in self.voices:
             row["acb"] = row["acb"].replace("/", "\\")
             row["wav"] = row["wav"].replace("/", "\\")
+        self.loaded_rows = {row["voiceAssetId"]: copy.deepcopy(row) for row in self.voices}
         self.results_path = root / "data" / "asr_results.jsonl"
 
-    def save(self):
+    def save(self, preserve_translations=True):
         latest = {row["voiceAssetId"]: row for row in read_json(self.catalog_path, [])}
         for row in self.voices:
+            voice_id = row["voiceAssetId"]
+            previous = self.loaded_rows.get(voice_id)
+            other = latest.get(voice_id)
+            if previous and other and (other.get("ja") != previous.get("ja") or other.get("zh") != previous.get("zh")):
+                if not preserve_translations:
+                    raise RuntimeError(f"Voice changed during maintenance: {voice_id}; reload before editing")
+                # A viewer edit made while ASR was running stays authoritative.
+                # Raw ASR is already appended, so its result remains available for review.
+                row.clear()
+                row.update(other)
+        for row in self.voices:
             other = latest.get(row["voiceAssetId"], {})
-            if not row.get("zh") and other.get("zh") and row.get("ja") == other.get("ja"):
+            if preserve_translations and not row.get("zh") and other.get("zh") and row.get("ja") == other.get("ja"):
                 row["zh"] = other["zh"]
                 row["translation_model"] = other.get("translation_model", "")
         write_json(self.catalog_path, self.voices)
+        self.loaded_rows = {row["voiceAssetId"]: copy.deepcopy(row) for row in self.voices}
 
     def selected(self, only=None, limit=0):
         rows = [row for row in self.voices if not only or row["voiceAssetId"] in only]
@@ -229,6 +275,8 @@ class Pipeline:
             row = by_id.get(result["voiceAssetId"])
             if row is None:
                 continue
+            if row.get("ja_origin", "").startswith("manual"):
+                continue
             row["asr_error"] = result.get("error", "")
             if repeated_transcript(result.get("text", "")):
                 row["asr_error"] = "repeated_transcript"
@@ -262,8 +310,8 @@ class Pipeline:
         from moss_transcribe_diarize.inference_utils import DEFAULT_PROMPT, build_transcription_messages, load_audio_item
         from moss_transcribe_diarize.transcript_parser import parse_transcript
 
-        dictionary = read_json(self.root / "data" / "name_dictionary.json")
-        hotwords = dictionary_hotwords(dictionary)
+        hotword_path = self.root / self.config.get("hotwords_file", "data\\hotwords.json")
+        hotwords = load_hotwords(hotword_path)
         prompt = DEFAULT_PROMPT + "音频是日语，请按原文转写，不要翻译。热词提示：" + ", ".join(hotwords)
         write_json(self.root / "data" / "asr_hotwords.json", hotwords)
         (self.root / "data" / "asr_prompt.txt").write_text(prompt + "\n", encoding="utf-8")
@@ -355,7 +403,7 @@ class Pipeline:
                         "stopped_at_audio_end": ending.finished[index],
                         "stopping_reason": ending.reasons[index],
                         "removed_short_repeats": len(segments) - len(filter_short_repeats(segments)),
-                        "review": review, "dictionary": "data\\name_dictionary.json",
+                        "review": review, "hotword_table": str(hotword_path.relative_to(self.root)),
                         "hotwords": hotwords,
                         "created_at": datetime.now(timezone.utc).isoformat()}
                 if not text:
@@ -410,7 +458,10 @@ class Pipeline:
                         if row.get("zh") and row.get("ja") != result["text"]:
                             row["zh"] = ""
                             row.pop("translation_model", None)
+                            row.pop("zh_normalization", None)
+                            row.pop("zh_origin", None)
                         row["ja"] = result["text"]
+                        row["ja_origin"] = "asr"
                         row["asr_error"] = ""
                         row["asr_model"] = result["model"]
                         row["asr_review"] = result["review"]
@@ -445,7 +496,7 @@ class Pipeline:
                     writer = csv.writer(output)
                     writer.writerow(["id", "name", "text", "trans"])
                     for row in rows[index:index + size]:
-                        writer.writerow([row["voiceAssetId"], row["speaker"], row["ja"].replace("\n", "\\n"), ""])
+                        writer.writerow([row["voiceAssetId"], row["speaker"], csv_text(row["ja"]), ""])
                     writer.writerow(["info", f"home_voice/{code}/{batch_number:03d}.txt", "", ""])
                     writer.writerow(["译者", "", "", ""])
                 batches.append(filename)
@@ -479,13 +530,68 @@ class Pipeline:
         write_json(self.root / "exports" / "home_voice_bilingual.json",
                    [{"voiceAssetId": row["voiceAssetId"], "speaker": row["speaker"],
                      "ja": row["ja"], "zh": row["zh"]} for row in self.voices])
-        with (self.root / "exports" / "home_voice_bilingual.csv").open("w", encoding="utf-8-sig", newline="") as output:
-            writer = csv.writer(output)
-            writer.writerow(["voiceAssetId", "speaker", "ja", "zh"])
-            for row in self.voices:
-                writer.writerow([row["voiceAssetId"], row["speaker"], row["ja"], row["zh"]])
+        write_bilingual_csv(self.root / "exports" / "home_voice_bilingual.csv", self.voices)
         self.save()
         event("exported", subtitles=len(self.voices), target=str(self.root / "exports"))
+
+    def clear_translations(self, only):
+        if not only:
+            raise ValueError("Select voice IDs explicitly before retranslating")
+        for row in self.selected(only):
+            row["zh"] = ""
+            for key in ("translation_model", "zh_normalization", "zh_origin"):
+                row.pop(key, None)
+        self.save(preserve_translations=False)
+
+    def import_corrections(self, path: Path):
+        with path.open(encoding="utf-8-sig", newline="") as source:
+            reader = csv.DictReader(source)
+            if not {"voiceAssetId", "ja", "zh"}.issubset(reader.fieldnames or []):
+                raise ValueError("CSV requires voiceAssetId, ja and zh columns")
+            updates = list(reader)
+        by_id = {row["voiceAssetId"]: row for row in self.voices}
+        seen = set()
+        # Validate the whole import before applying any edits.
+        for item in updates:
+            voice_id = item["voiceAssetId"]
+            if voice_id not in by_id or voice_id in seen:
+                raise ValueError(f"Unknown or duplicate voice ID: {voice_id}")
+            if item.get("ja") is None or item.get("zh") is None or not item["ja"].strip():
+                raise ValueError(f"Incomplete correction row: {voice_id}")
+            seen.add(voice_id)
+        changed = invalidated = 0
+        for item in updates:
+            row = by_id[item["voiceAssetId"]]
+            ja, zh = csv_original(item["ja"]), csv_original(item["zh"])
+            ja_changed, zh_changed = ja != row["ja"], zh != row["zh"]
+            if not ja_changed and not zh_changed:
+                continue
+            if ja_changed and not zh_changed:
+                zh = ""
+                invalidated += 1
+            if ja_changed:
+                row.update(ja=ja, ja_origin="manual_csv", asr_error="", asr_review=[])
+            row["zh"] = zh
+            row["zh_origin"] = "manual_csv" if zh else ""
+            row.pop("translation_model", None)
+            row.pop("zh_normalization", None)
+            changed += 1
+        self.save(preserve_translations=False)
+        event("corrections_imported", changed=changed, invalidated_chinese=invalidated)
+
+    def progress(self):
+        self.refresh_asr()
+        source = Path(self.config.get("source_acb", ""))
+        known = {row["voiceAssetId"] for row in self.voices}
+        new_ids = sorted(path.stem for path in source.iterdir()
+                         if path.is_file() and VOICE_PATTERN.fullmatch(path.name) and path.stem not in known) if source.is_dir() else []
+        return {"total": len(self.voices), "new_ids": new_ids, "source_available": source.is_dir(),
+                "missing_acb": [row["voiceAssetId"] for row in self.voices if not (self.root / row["acb"]).is_file()],
+                "missing_wav": [row["voiceAssetId"] for row in self.voices if not (self.root / row["wav"]).is_file()],
+                "pending_asr": [row["voiceAssetId"] for row in self.voices if not row.get("ja") or row.get("asr_error")],
+                "pending_translation": [row["voiceAssetId"] for row in self.voices if row.get("ja") and not row.get("zh")],
+                "asr_errors": [row["voiceAssetId"] for row in self.voices if row.get("asr_error")],
+                "review": [row["voiceAssetId"] for row in self.voices if row.get("asr_review")]}
 
     def status(self):
         self.refresh_asr()
@@ -504,8 +610,9 @@ def main():
     parser.add_argument("--only", nargs="+")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--redo-asr", action="store_true", help="Explicitly regenerate selected ASR, preserving old raw records")
+    parser.add_argument("--root", type=Path, default=ROOT, help="Project data directory")
     args = parser.parse_args()
-    pipeline = Pipeline()
+    pipeline = Pipeline(args.root.resolve())
     stages = ["collect", "convert", "asr", "prepare", "translate", "export", "status"] if args.stage == "run" else [args.stage]
     for stage in stages:
         function = getattr(pipeline, stage)

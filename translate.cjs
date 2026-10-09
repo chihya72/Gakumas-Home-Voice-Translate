@@ -34,6 +34,8 @@ function persistProgress(catalogFile, current) {
     if (translated && !row.zh && row.ja === translated.ja) {
       row.zh = translated.zh;
       row.translation_model = translated.translation_model;
+      row.zh_origin = 'machine';
+      delete row.zh_normalization;
     }
   }
   saveJson(catalogFile, latest);

@@ -1,5 +1,6 @@
 """Exercise ID preservation, incremental ingest and source/translation separation."""
 import importlib.util
+import csv
 import json
 import sys
 import tempfile
@@ -13,6 +14,19 @@ spec.loader.exec_module(pipeline)
 
 
 class PipelineTests(unittest.TestCase):
+    def test_viewer_correction_during_asr_is_not_overwritten(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
+            root = Path(directory)
+            pipeline.write_json(root / "config.json", {})
+            row = {"voiceAssetId": "voice", "speaker": "麻央", "ja": "古い", "zh": "旧译文", "acb": "a", "wav": "w"}
+            pipeline.write_json(root / "data" / "voices.json", [row])
+            asr = pipeline.Pipeline(root)
+            manual = dict(row, ja="校正済み", zh="人工校对", ja_origin="manual_viewer")
+            pipeline.write_json(root / "data" / "voices.json", [manual])
+            asr.voices[0].update(ja="再認識", zh="")
+            asr.save()
+            self.assertEqual(pipeline.read_json(asr.catalog_path)[0], manual)
+
     def test_chinese_export_normalizes_retained_japanese_laughter_only(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
             root = Path(directory)
@@ -85,11 +99,59 @@ class PipelineTests(unittest.TestCase):
         self.assertFalse(pipeline.repeated_transcript("ふふ、ふふ"))
         self.assertFalse(pipeline.repeated_transcript(sentence))
 
-    def test_hotwords_include_all_dictionary_keys_without_chinese_values_or_speaker_filtering(self):
-        dictionary = {"新聞部": "新闻部", "藤田ことね": "藤田琴音", "ことね": "琴音", "広": "广"}
-        words = pipeline.dictionary_hotwords(dictionary)
-        self.assertEqual(words, ["新聞部", "藤田ことね", "ことね", "広"])
-        self.assertNotIn("琴音", words)
+    def test_local_hotwords_ignore_metadata_and_deduplicate_all_groups(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
+            path = Path(directory) / "hotwords.json"
+            pipeline.write_json(path, {"_说明": "不进提示", "characters": ["藤田ことね", "ことね"],
+                                       "aliases": ["ことね", "広"], "terms": ["初星学園"]})
+            self.assertEqual(pipeline.load_hotwords(path), ["藤田ことね", "ことね", "広", "初星学園"])
+
+    def test_csv_keeps_literal_newlines_and_import_invalidates_stale_chinese(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
+            root = Path(directory)
+            pipeline.write_json(root / "config.json", {})
+            row = {"voiceAssetId": "voice", "speaker": "麻央", "ja": "最初\n原文", "zh": "旧\n译文",
+                   "acb": "voice.acb", "wav": "voice.wav"}
+            job = pipeline.Pipeline(root)
+            job.voices = [row]
+            job.save()
+            path = root / "review.csv"
+            pipeline.write_bilingual_csv(path, [row])
+            self.assertEqual(len(path.read_text(encoding="utf-8-sig").splitlines()), 2)
+            with path.open(encoding="utf-8-sig", newline="") as source:
+                exported = list(csv.DictReader(source))[0]
+            self.assertEqual(exported["ja"], "最初\\n原文")
+            self.assertEqual(exported["zh"], "旧\\n译文")
+            corrected = dict(row, ja="校正\n原文")
+            pipeline.write_bilingual_csv(path, [corrected])
+            job.import_corrections(path)
+            loaded = pipeline.Pipeline(root)
+            self.assertEqual(loaded.voices[0]["ja"], "校正\n原文")
+            self.assertEqual(loaded.voices[0]["zh"], "")
+            job.results_path.write_text(json.dumps({"voiceAssetId": "voice", "text": "過去", "error": "old"}) + "\n")
+            loaded.refresh_asr()
+            self.assertEqual(loaded.voices[0]["ja"], "校正\n原文")
+            self.assertFalse(loaded.voices[0]["asr_error"])
+            pipeline.write_bilingual_csv(path, [dict(corrected, zh="新\n译文")])
+            loaded.import_corrections(path)
+            self.assertEqual(pipeline.Pipeline(root).voices[0]["zh"], "新\n译文")
+            loaded.clear_translations({"voice"})
+            self.assertEqual(pipeline.Pipeline(root).voices[0]["zh"], "")
+
+    def test_bad_correction_import_is_atomic(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
+            root = Path(directory)
+            pipeline.write_json(root / "config.json", {})
+            row = {"voiceAssetId": "voice", "speaker": "麻央", "ja": "原文", "zh": "译文", "acb": "a", "wav": "w"}
+            job = pipeline.Pipeline(root)
+            job.voices = [row]
+            job.save()
+            before = job.catalog_path.read_bytes()
+            path = root / "bad.csv"
+            pipeline.write_bilingual_csv(path, [dict(row, ja="校正"), dict(row, voiceAssetId="unknown")])
+            with self.assertRaises(ValueError):
+                job.import_corrections(path)
+            self.assertEqual(job.catalog_path.read_bytes(), before)
 
     def test_incremental_ingest_keeps_original_audio_and_manual_text(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:

@@ -6,6 +6,7 @@
   "translation_memory": "D:\\GIT\\Gakumas-Auto-Translate\\csv_data",
   "character_master": "D:\\GIT\\gakumas-master-translation-pm\\gakumasu-diff\\orig\\Character.yaml",
   "subtitle_template": "D:\\Games\\gakumas\\gakumas-local\\local-files\\genericTrans\\genericTrans\\lyrics\\home_voice_subtitles.json",
+  "hotwords_file": "data\\hotwords.json",
   "asr_batch_size": 8,
   "asr_max_tokens": 256,
   "translation_batch_size": 250,
