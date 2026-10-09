@@ -4135,7 +4135,7 @@
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-001_home_cmmn-02.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-001_home_cmmn-02.wav",
     "ja": "やっぱ私、ステージに立ってる瞬間が大好き！",
-    "zh": "我果然最喜欢站在舞台上的瞬间了！",
+    "zh": "果然，我最喜欢的是站在舞台上的那一刻！",
     "wav_source": "reused",
     "duration": 4.745708333333333,
     "sample_rate": 48000,
@@ -4144,7 +4144,9 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T19:45:42.845Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-001_home_cmmn-03",
