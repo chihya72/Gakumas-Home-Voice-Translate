@@ -4094,7 +4094,7 @@
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-000_home_cmmn-03.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-000_home_cmmn-03.wav",
     "ja": "世界中に私の可愛さアピールしてきまーす！",
-    "zh": "我要去全世界展示我的可爱啦——！",
+    "zh": "我要去向全世界展示我的可爱啦——！",
     "wav_source": "reused",
     "duration": 4.3224583333333335,
     "sample_rate": 48000,
@@ -4103,7 +4103,9 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T19:43:17.139Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-001_home_cmmn-01",
