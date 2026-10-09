@@ -89,7 +89,7 @@
     "acb": "audio\\acb\\sud_vo_system_amao_home_cmmn-04.acb",
     "wav": "audio\\wav\\sud_vo_system_amao_home_cmmn-04.wav",
     "ja": "かっこいい王子様は僕の憧れなんです。",
-    "zh": "帅气的王子是我的憧憬。",
+    "zh": "帅气的王子一直是我的憧憬。",
     "wav_source": "reused",
     "duration": 3.6561041666666667,
     "sample_rate": 48000,
@@ -98,7 +98,9 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T18:11:36.814Z"
   },
   {
     "voiceAssetId": "sud_vo_system_amao_home_cmmn-05",
