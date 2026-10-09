@@ -26,8 +26,8 @@
     "speaker": "麻央",
     "acb": "audio\\acb\\sud_vo_system_amao_home_cmmn-01.acb",
     "wav": "audio\\wav\\sud_vo_system_amao_home_cmmn-01.wav",
-    "ja": "プロデューサーも、困ったら僕を頼ってくださいね。",
-    "zh": "制作人也是，遇到困难时就来依靠我吧。",
+    "ja": "プロデューサーも、\n困ったら僕を頼ってくださいね。",
+    "zh": "制作人你也一样，\n遇到困难时就来依靠我吧。",
     "wav_source": "reused",
     "duration": 3.7800625,
     "sample_rate": 48000,
@@ -36,7 +36,10 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "ja_origin": "manual_viewer",
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T18:06:40.972Z"
   },
   {
     "voiceAssetId": "sud_vo_system_amao_home_cmmn-02",
