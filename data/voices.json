@@ -5176,8 +5176,8 @@
     "speaker": "美鈴",
     "acb": "audio\\acb\\sud_vo_system_cidol-hmsz-3-000_home_cmmn-01.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-hmsz-3-000_home_cmmn-01.wav",
-    "ja": "壊れてしまったものも、すべて取り戻します。",
-    "zh": "坏掉的东西，我也会全部找回来。",
+    "ja": "壊れてしまったものも、\nすべて取り戻します。",
+    "zh": "所有已经坏掉的东西，\n我都会全部找回来。",
     "wav_source": "reused",
     "duration": 5.575166666666667,
     "sample_rate": 48000,
@@ -5186,7 +5186,10 @@
     "asr_error": "",
     "asr_model": "D:\\GIT\\MOSS-Transcribe-Diarize\\pretrained\\moss-transcribe-diarize",
     "asr_review": [],
-    "translation_model": "deepseek-v4-pro"
+    "ja_origin": "manual_viewer",
+    "zh_origin": "manual_viewer",
+    "reviewed": true,
+    "reviewed_at": "2026-10-09T20:04:58.653Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-hmsz-3-000_home_cmmn-02",
