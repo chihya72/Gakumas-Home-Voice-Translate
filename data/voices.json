@@ -4137,8 +4137,8 @@
     "speaker": "ことね",
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-001_home_cmmn-02.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-001_home_cmmn-02.wav",
-    "ja": "やっぱ私、ステージに立ってる瞬間が大好き！",
-    "zh": "果然，我最喜欢的是站在舞台上的那一刻！",
+    "ja": "やっぱ私、ステージに\n立ってる瞬間が大好き！",
+    "zh": "果然，我最喜欢的是\n站在舞台上的那一刻！",
     "wav_source": "reused",
     "duration": 4.745708333333333,
     "sample_rate": 48000,
@@ -4149,7 +4149,8 @@
     "asr_review": [],
     "zh_origin": "manual_viewer",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:45:42.845Z"
+    "reviewed_at": "2026-10-09T20:21:15.411Z",
+    "ja_origin": "manual_viewer"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-001_home_cmmn-03",
