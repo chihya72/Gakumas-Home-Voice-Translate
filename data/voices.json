@@ -4196,7 +4196,7 @@
     "acb": "audio\\acb\\sud_vo_system_cidol-fktn-3-002_home_cmmn-02.acb",
     "wav": "audio\\wav\\sud_vo_system_cidol-fktn-3-002_home_cmmn-02.wav",
     "ja": "ちびどもとお祭り行くなら、バイト頑張らないとですね！",
-    "zh": "要和小家伙们去祭典的话\n得努力打工才行呢！",
+    "zh": "要和小家伙们去祭典的话，得努力打工才行呢！",
     "wav_source": "reused",
     "duration": 4.597104166666667,
     "sample_rate": 48000,
@@ -4207,7 +4207,7 @@
     "asr_review": [],
     "zh_origin": "manual_viewer",
     "reviewed": true,
-    "reviewed_at": "2026-10-09T19:47:20.140Z"
+    "reviewed_at": "2026-10-09T20:03:01.680Z"
   },
   {
     "voiceAssetId": "sud_vo_system_cidol-fktn-3-002_home_cmmn-03",
