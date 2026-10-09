@@ -69,7 +69,7 @@ ASR 在生成的完整片段结束时间达到 WAV 实测时长时停止，允�
 
 第 6 项可按完整 voiceAssetId、角色码、`@ID列表文件` 或 `*` 选择范围。导出 `exports\home_voice_review.csv`，修改 ja/zh 后再导入。修改日文而不修改中文时，清空对应旧中文；同时填写的新中文会保留。导入先检查所有 ID 和字段，再整体应用。之后执行第 4 步补齐中文、第 5 步导出。
 
-`D:\GIT\gakumas-viewer` 已接入“主页语音”页，用 vgmstream WebAssembly 在浏览器中按需解码 ACB，支持试听、日中校对、草稿、CSV 导入导出与文本保存。WAV 只在浏览器内存或本地识别目录中存在，不进 GitHub。Chrome / Edge 选择本项目目录后可直接写回总表及导出文件，或从公开 GitHub 项目读取并用 viewer 原有登录提交文本。
+`D:\GIT\gakumas-viewer` 已接入“主页语音”页，上线后自动从 `chihya72/Gakumas-Home-Voice-Translate` 的 `main` 分支读取数据，用 vgmstream WebAssembly 在浏览器中按需解码 ACB。状态为全部、AI识别待复核、待校对、已校对。日中编辑自动暂存草稿，使用 viewer 原有 GitHub 登录后点击“完成校对”，只保存本条文本并标记为已校对。原稿区与仓库内 CSV 显示字面量 `\n`，输入框显示实际换行。页面没有目录选择和导入导出按钮；本地 CSV 维护仍使用 run.py 第 6 项。WAV 只在浏览器内存或本地识别目录中存在，不进 GitHub。
 
 viewer 保存的人工日文标记为 `manual_viewer`，CSV 导入标记为 `manual_csv`，普通增量流程保留人工稿。识别期间总表若发生外部校对，保留该修改，原始识别结果仍写入日志供复核。
 
