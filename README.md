@@ -73,4 +73,4 @@ ASR 在生成的完整片段结束时间达到 WAV 实测时长时停止，允�
 
 viewer 保存的人工日文标记为 `manual_viewer`，CSV 导入标记为 `manual_csv`，普通增量流程保留人工稿。识别期间总表若发生外部校对，保留该修改，原始识别结果仍写入日志供复核。
 
-本项目仅生成字幕文件，不部署游戏文件、不启动或重启任何游戏或网页服务。未创建远程仓库。
+公开仓库：[chihya72/Gakumas-Home-Voice-Translate](https://github.com/chihya72/Gakumas-Home-Voice-Translate)。在线校对入口：[主页语音](https://chihya72.github.io/gakumas-viewer/home-voice)。本地更新完成后将文本与 ACB 同步到 main；WAV、模型和 API 密钥不上传。本项目不部署游戏文件、不启动或重启游戏。
