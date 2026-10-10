@@ -1,5 +1,7 @@
 # Gakumas Home Voice Translate
 
+> 本项目已迁移到 [gakumas-translation-work/home-voice](https://github.com/chihya72/gakumas-translation-work/tree/main/home-voice)。后续音频与文本更新、viewer“完成校对”均使用工作仓库；本机请进入 `D:\GIT\gakumas-translation-work\home-voice` 运行 `python run.py`。本仓库及原本地目录保留作历史备份，以下内容为迁移前说明。
+
 Windows 本地主页语音处理仓库：收录 ACB、复用或转换 WAV、通过 OpenMOSS 转写日语，再复用既有翻译引擎生成简体中文字幕。
 
 ## 使用
